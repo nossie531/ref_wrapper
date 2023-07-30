@@ -9,6 +9,7 @@ use std::ops::{Deref, DerefMut};
 ///
 /// Be careful when handling the return value. Access to a referenced
 /// target over its lifetime will result in undefined behavior.
+#[inline(always)]
 pub unsafe fn reset_ref_lifetime<'a, R, T>(src: &R) -> &'a T
 where
     R: Deref<Target = T>,
@@ -24,6 +25,7 @@ where
 ///
 /// Be careful when handling the return value. Access to a referenced
 /// target over its lifetime will result in undefined behavior.
+#[inline(always)]
 pub unsafe fn reset_mut_lifetime<'a, R, T>(src: &mut R) -> &'a mut T
 where
     R: DerefMut<Target = T>,

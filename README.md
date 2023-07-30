@@ -43,7 +43,7 @@ fn extract_iter(src: Ref<Vec<i32>>) -> RefIter<&i32> {
 }
 ```
 
-## Frequent careless mistakes.
+## Frequent careless mistakes
 
 When using synonyms for iterators, be careful not to specify the wrong type parameter.
 For example, the result type of `Vec<T>::iter(&self)` method is `Iter<'a, T>`, which
@@ -51,3 +51,9 @@ when wrapped becomes `RefIter<'a, &T>`. Note the change from `T` to `&T`. The re
 for this is that the type `Iter<'a, T>` implements the trait `Iterator<Item = &'a T>`,
 and the wrapping target is latter. Although somewhat cumbersome, this allows for the
 case where an Iterator's Item is not a reference.
+
+## What's new.
+
+Ver 0.1.2
+
+* Some internal function is inlined.
