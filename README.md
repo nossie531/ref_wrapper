@@ -8,39 +8,36 @@ Wrapper of dynamically borrowed data.
 
 This crate have mainly below items.
 
-|Name         | Summary                                                       |
-|-------------|---------------------------------------------------------------|
-|`RefWrap`    | Wrapper of `Ref` which can read content from base reference.  |
-|`RefWrapMut` | Wrapper of `RefMut` which can read/write from base reference. |
-|`RefIter`    | Type synonim (iterator version of `Ref`).                     |
-|`RefIterMut` | Type synonim (iterator version of `RefMut`).                  |
+|Name         | Summary                           |
+|-------------|-----------------------------------|
+|`RefWrap`    | Wrapper of `Ref`.                 |
+|`RefWrapMut` | Wrapper of `RefMut`.              |
+|`RefIter`    | Iterator version of `RefWrap`.    |
+|`RefIterMut` | Iterator version of `RefWrapMut`. |
 
 ## Examples
 
 Normal use case.
 
 ```rust
-let vec = RefCell::new(vec![1, 2, 3]);
-let sum = extract_summary(vec.borrow());
-assert_eq!(*sum, 6);
+let src = RefCell::new(vec![1, 2, 3]);
+let target = RefWrap::new(src.borrow(), |x| Box::new(VecStat(x)));
+assert_eq!(target.summary(), 6);
 
-fn extract_summary(src: Ref<Vec<i32>>) -> RefWrap<i32> {
-    RefWrap::new(src, |x| Box::new(x.iter().sum::<i32>()))
+pub struct VecStat<'a>(&'a Vec<i32>);
+impl<'a> VecStat<'a> {
+    pub fn summary(&self) -> i32 {
+        self.0.iter().sum::<i32>()
+    }
 }
 ```
 
-Special use case for iterator.
+Iterator use case.
 
 ```rust
-let vec = RefCell::new(vec![1, 2, 3]);
-let mut iter = extract_iter(vec.borrow());
-assert_eq!(*iter.next().unwrap(), 1);
-assert_eq!(*iter.next().unwrap(), 2);
-assert_eq!(*iter.next().unwrap(), 3);
-
-fn extract_iter(src: Ref<Vec<i32>>) -> RefIter<&i32> {
-    RefIter::new(src, |x| Box::new(x.iter()))
-}
+let src = RefCell::new(vec![1, 2, 3]);
+let iter = RefIter::new(src.borrow(), |x| Box::new(x.iter()));
+assert_eq!(iter.sum::<i32>(), 6);
 ```
 
 ## Frequent careless mistakes

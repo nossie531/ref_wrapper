@@ -1,6 +1,6 @@
 [package]
 name = "ref_wrapper"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Nossie531"]
 edition = "2021"
 description = "Wrapper of dynamically borrowed data."

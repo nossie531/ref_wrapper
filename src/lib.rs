@@ -17,15 +17,19 @@ borrowing is also dropped.
 Normal use case.
 
 ```
-# use ref_wrapper::RefWrap;
+# use ref_wrapper::{RefWrap};
 # use std::cell::{Ref, RefCell};
+# use std::ops::Deref;
 #
-let vec = RefCell::new(vec![1, 2, 3]);
-let summary = extract_summary(vec.borrow());
-assert_eq!(*summary, 6);
+let src = RefCell::new(vec![1, 2, 3]);
+let target = RefWrap::new(src.borrow(), |x| Box::new(VecStat(x)));
+assert_eq!(target.summary(), 6);
 
-fn extract_summary(src: Ref<Vec<i32>>) -> RefWrap<'_, i32> {
-    RefWrap::new(src, |x| Box::new(x.iter().sum()))
+pub struct VecStat<'a>(&'a Vec<i32>);
+impl<'a> VecStat<'a> {
+    pub fn summary(&self) -> i32 {
+        self.0.iter().sum::<i32>()
+    }
 }
 ```
 
@@ -35,13 +39,9 @@ Iterator use case.
 # use ref_wrapper::{RefIter, RefWrap};
 # use std::cell::{Ref, RefCell};
 #
-let vec = RefCell::new(vec![1, 2, 3]);
-let iter = extract_iter(vec.borrow());
+let src = RefCell::new(vec![1, 2, 3]);
+let iter = RefIter::new(src.borrow(), |x| Box::new(x.iter()));
 assert_eq!(iter.sum::<i32>(), 6);
-
-fn extract_iter(src: Ref<Vec<i32>>) -> RefIter<'_, &i32> {
-    RefIter::new(src, |x| Box::new(x.iter()))
-}
 ```
 */
 
