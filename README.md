@@ -51,6 +51,10 @@ case where an Iterator's Item is not a reference.
 
 ## What's new.
 
-Ver 0.1.2
+v0.1.3-0.1.5
+
+* Minor refactoring.
+
+v0.1.2
 
 * Some internal function is inlined.

@@ -51,10 +51,8 @@ mod ref_wrap;
 mod ref_wrap_mut;
 mod reset_lifetime;
 
-pub use ref_iter::RefIter;
-pub use ref_iter_mut::RefIterMut;
-pub use ref_wrap::RefWrap;
-pub use ref_wrap_mut::RefWrapMut;
-
-use reset_lifetime::reset_mut_lifetime;
-use reset_lifetime::reset_ref_lifetime;
+pub use ref_iter::*;
+pub use ref_iter_mut::*;
+pub use ref_wrap::*;
+pub use ref_wrap_mut::*;
+use reset_lifetime::*;
