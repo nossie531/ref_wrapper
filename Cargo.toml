@@ -1,10 +1,10 @@
 [package]
 name = "ref_wrapper"
-version = "0.1.5"
+version = "0.2.0"
 authors = ["Nossie531"]
 edition = "2021"
 description = "Wrapper of dynamically borrowed data."
 repository = "https://github.com/nossie531/ref_wrapper"
 license = "MIT OR Apache-2.0"
-keywords = ["refcell", "pointer", "iterator"]
-categories = ["rust-patterns"]
+keywords = ["Ref", "RefMut", "RefCell", "Iterator"]
+categories = ["no-std", "rust-patterns"]

@@ -1,41 +1,35 @@
 //! Provider of [`RefWrap`].
 
 use crate::reset_ref_lifetime;
-use std::any::Any;
-use std::cell::Ref;
-use std::ops::{Deref, DerefMut};
+use core::any::Any;
+use core::cell::Ref;
+use core::ops::{Deref, DerefMut};
 
 /// Wrapper of [`Ref`].
-pub struct RefWrap<'a, T>
-where
-    T: 'a + ?Sized,
-{
-    _base: Ref<'a, dyn Any>,
-    value: Box<T>,
+pub struct RefWrap<'a, T> {
+    _src: Ref<'a, dyn Any>,
+    value: T,
 }
 
 impl<'a, T> RefWrap<'a, T>
 where
-    T: 'a + ?Sized,
+    T: 'a,
 {
     /// Create a new value.
-    pub fn new<S, F>(base: Ref<'a, S>, f: F) -> Self
+    pub fn new<S, F>(src: Ref<'a, S>, f: F) -> Self
     where
         S: Any,
-        F: FnOnce(&'a S) -> Box<T>,
+        F: FnOnce(&'a S) -> T,
     {
-        let base_ref = unsafe { reset_ref_lifetime(&base) };
+        let src_ref = unsafe { reset_ref_lifetime(&src) };
         Self {
-            _base: base,
-            value: f(base_ref),
+            _src: src,
+            value: f(src_ref),
         }
     }
 }
 
-impl<T> Deref for RefWrap<'_, T>
-where
-    T: ?Sized,
-{
+impl<T> Deref for RefWrap<'_, T> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
@@ -43,10 +37,7 @@ where
     }
 }
 
-impl<T> DerefMut for RefWrap<'_, T>
-where
-    T: ?Sized,
-{
+impl<T> DerefMut for RefWrap<'_, T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.value
     }

@@ -1,7 +1,7 @@
 //! Provide functions for reset reference lifetimes.
 
-use std::any::Any;
-use std::ops::{Deref, DerefMut};
+use core::any::Any;
+use core::ops::{Deref, DerefMut};
 
 /// Reset immutable reference lifetime.
 ///
@@ -10,9 +10,9 @@ use std::ops::{Deref, DerefMut};
 /// Be careful when handling the return value. Access to a referenced
 /// target over its lifetime will result in undefined behavior.
 #[inline(always)]
-pub unsafe fn reset_ref_lifetime<'a, R, T>(src: &R) -> &'a T
+pub unsafe fn reset_ref_lifetime<'a, S, T>(src: &S) -> &'a T
 where
-    R: Deref<Target = T>,
+    S: Deref<Target = T>,
     T: Any,
 {
     let src_ptr = src.deref() as *const T;
@@ -26,9 +26,9 @@ where
 /// Be careful when handling the return value. Access to a referenced
 /// target over its lifetime will result in undefined behavior.
 #[inline(always)]
-pub unsafe fn reset_mut_lifetime<'a, R, T>(src: &mut R) -> &'a mut T
+pub unsafe fn reset_mut_lifetime<'a, S, T>(src: &mut S) -> &'a mut T
 where
-    R: DerefMut<Target = T>,
+    S: DerefMut<Target = T>,
     T: Any,
 {
     let src_ptr = src.deref_mut() as *mut T;

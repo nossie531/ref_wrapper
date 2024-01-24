@@ -1,15 +1,15 @@
-mod common;
+mod for_test;
 
-pub use common::*;
+use core::cell::RefCell;
+use core::ops::{Deref, DerefMut};
+pub use for_test::*;
 use ref_wrapper::RefWrap;
-use std::cell::RefCell;
-use std::ops::{Deref, DerefMut};
 use std::sync::OnceLock;
 
 #[test]
 fn deref() {
     let src = RefCell::new(samples());
-    let target = RefWrap::new(src.borrow(), |x| Box::new(VecStat::new(x)));
+    let target = RefWrap::new(src.borrow(), |x| VecStat::new(x));
 
     let result = target.deref();
 
@@ -22,7 +22,7 @@ fn deref() {
 #[test]
 fn deref_mut() {
     let src = RefCell::new(samples());
-    let mut target = RefWrap::new(src.borrow(), |x| Box::new(VecStat::new(x)));
+    let mut target = RefWrap::new(src.borrow(), |x| VecStat::new(x));
 
     let result = target.deref_mut();
 
@@ -41,7 +41,7 @@ fn test_drop_count() {
     {
         assert_eq!(drop_tracer.count(), 1);
         let src = RefCell::new(item);
-        RefWrap::new(src.borrow(), Box::new);
+        RefWrap::new(src.borrow(), |_| "dummy");
         assert_eq!(drop_tracer.count(), 1);
     }
 

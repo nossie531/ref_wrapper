@@ -6,14 +6,12 @@ Wrapper of dynamically borrowed data.
 *The author of this crate is not good at English.*  
 *Forgive me if the document is hard to read.*
 
-This crate have mainly below items.
+This crate provide wrappers for value generated from dynamic borrowing types.
 
-|Name         | Summary                           |
-|-------------|-----------------------------------|
-|`RefWrap`    | Wrapper of `Ref`.                 |
-|`RefWrapMut` | Wrapper of `RefMut`.              |
-|`RefIter`    | Iterator version of `RefWrap`.    |
-|`RefIterMut` | Iterator version of `RefWrapMut`. |
+| Wrapper     | Target   |
+|-------------|----------|
+|`RefWrap`    | `Ref`    |
+|`RefWrapMut` | `RefMut` |
 
 ## Examples
 
@@ -21,7 +19,7 @@ Normal use case.
 
 ```rust
 let src = RefCell::new(vec![1, 2, 3]);
-let target = RefWrap::new(src.borrow(), |x| Box::new(VecStat(x)));
+let target = RefWrap::new(src.borrow(), |x| VecStat(x));
 assert_eq!(target.summary(), 6);
 
 pub struct VecStat<'a>(&'a Vec<i32>);
@@ -36,20 +34,18 @@ Iterator use case.
 
 ```rust
 let src = RefCell::new(vec![1, 2, 3]);
-let iter = RefIter::new(src.borrow(), |x| Box::new(x.iter()));
+let iter = RefWrap::new(src.borrow(), |x| x.iter());
 assert_eq!(iter.sum::<i32>(), 6);
 ```
 
-## Frequent careless mistakes
-
-When using synonyms for iterators, be careful not to specify the wrong type parameter.
-For example, the result type of `Vec<T>::iter(&self)` method is `Iter<'a, T>`, which
-when wrapped becomes `RefIter<'a, &T>`. Note the change from `T` to `&T`. The reason
-for this is that the type `Iter<'a, T>` implements the trait `Iterator<Item = &'a T>`,
-and the wrapping target is latter. Although somewhat cumbersome, this allows for the
-case where an Iterator's Item is not a reference.
-
 ## What's new.
+
+v0.2.0
+
+* Crate is now `no_std`.
+* `new` method callback argument returns no longer need to wrapped in `Box`.
+* `RefWrap` and `RefWrapMut` implement `Iterator` in certain cases.
+* Instead of the above, `RefIter` and `RefIterMut` have been removed.
 
 v0.1.3-0.1.5
 
