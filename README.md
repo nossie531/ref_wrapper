@@ -40,6 +40,10 @@ assert_eq!(iter.sum::<i32>(), 6);
 
 ## What's new.
 
+v0.2.1
+
+* Minor refactoring.
+
 v0.2.0
 
 * Crate is now `no_std`.

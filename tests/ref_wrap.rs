@@ -1,10 +1,11 @@
 mod for_test;
 
+pub use for_test::*;
+
 use core::cell::RefCell;
 use core::ops::{Deref, DerefMut};
-pub use for_test::*;
+use drop_tracer::DropTracer;
 use ref_wrapper::RefWrap;
-use std::sync::OnceLock;
 
 #[test]
 fn deref() {
@@ -34,18 +35,10 @@ fn deref_mut() {
 
 #[test]
 fn test_drop_count() {
-    static DROP_TRACER: OnceLock<DropTracer> = OnceLock::new();
-    let drop_tracer = DROP_TRACER.get_or_init(DropTracer::new);
-    let item = drop_tracer.new_item();
-
-    {
-        assert_eq!(drop_tracer.count(), 1);
-        let src = RefCell::new(item);
+    DropTracer::test_drop(|tracer| {
+        let src = RefCell::new(tracer.new_item());
         RefWrap::new(src.borrow(), |_| "dummy");
-        assert_eq!(drop_tracer.count(), 1);
-    }
-
-    assert_eq!(drop_tracer.count(), 0);
+    });
 }
 
 pub struct VecStat<'a> {

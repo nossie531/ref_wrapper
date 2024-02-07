@@ -1,6 +1,6 @@
 [package]
 name = "ref_wrapper"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Nossie531"]
 edition = "2021"
 description = "Wrapper of dynamically borrowed data."
@@ -8,3 +8,6 @@ repository = "https://github.com/nossie531/ref_wrapper"
 license = "MIT OR Apache-2.0"
 keywords = ["Ref", "RefMut", "RefCell", "Iterator"]
 categories = ["no-std", "rust-patterns"]
+
+[dev-dependencies]
+drop_tracer = "0.1"
