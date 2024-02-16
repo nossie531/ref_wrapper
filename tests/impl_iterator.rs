@@ -1,7 +1,7 @@
-mod for_test;
+mod common;
 
+pub use common::*;
 use core::cell::RefCell;
-pub use for_test::*;
 use ref_wrapper::{RefWrap, RefWrapMut};
 
 #[test]

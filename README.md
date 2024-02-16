@@ -6,6 +6,8 @@ Wrapper of dynamically borrowed data.
 *The author of this crate is not good at English.*  
 *Forgive me if the document is hard to read.*
 
+## What is this?
+
 This crate provide wrappers for value generated from dynamic borrowing types.
 
 | Wrapper     | Target   |
@@ -39,6 +41,11 @@ assert_eq!(iter.sum::<i32>(), 6);
 ```
 
 ## What's new.
+
+v0.2.2
+
+* Remove unused lifetime constraint of `RefIter::new` and `RefIterMut::new`.
+* Minor refactoring.
 
 v0.2.1
 

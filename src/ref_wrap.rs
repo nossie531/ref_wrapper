@@ -11,10 +11,7 @@ pub struct RefWrap<'a, T> {
     value: T,
 }
 
-impl<'a, T> RefWrap<'a, T>
-where
-    T: 'a,
-{
+impl<'a, T> RefWrap<'a, T> {
     /// Create a new value.
     pub fn new<S, F>(src: Ref<'a, S>, f: F) -> Self
     where

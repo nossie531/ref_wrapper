@@ -11,10 +11,7 @@ pub struct RefWrapMut<'a, T> {
     value: T,
 }
 
-impl<'a, T> RefWrapMut<'a, T>
-where
-    T: 'a,
-{
+impl<'a, T> RefWrapMut<'a, T> {
     /// Create a new value.
     pub fn new<S, F>(mut src: RefMut<'a, S>, f: F) -> Self
     where
