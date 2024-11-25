@@ -6,14 +6,27 @@ Wrapper of dynamically borrowed data.
 *The author of this crate is not good at English.*  
 *Forgive me if the document is hard to read.*
 
+## ⚠ Warning!!!
+
+This crate is not recommended.
+
+Because we found `unsafe` misuse in this crate. Specifically,
+references obtained though `RefWrap` become dangling references
+after the `RefWrap` destroyed. 
+
+Instead, we create [`ref_iter`] Crate.  
+However, this one targets only iterators.
+
+[`ref_iter`]:https://crates.io/crates/ref_iter
+
 ## What is this?
 
 This crate provide wrappers for value generated from dynamic borrowing types.
 
-| Wrapper     | Target   |
-|-------------|----------|
-|`RefWrap`    | `Ref`    |
-|`RefWrapMut` | `RefMut` |
+| Wrapper      | Target   |
+|--------------|----------|
+| `RefWrap`    | `Ref`    |
+| `RefWrapMut` | `RefMut` |
 
 ## Examples
 
@@ -41,6 +54,10 @@ assert_eq!(iter.sum::<i32>(), 6);
 ```
 
 ## What's new.
+
+v0.3.0
+
+* Notice of non-recommendation.
 
 v0.2.2
 
